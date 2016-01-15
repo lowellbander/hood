@@ -11,6 +11,7 @@
   <body>
     <div id="content"></div>
     <script type="text/babel">
+
       var Window = React.createClass({
         getInitialState: function() {
           return {homes: []};
@@ -50,7 +51,8 @@
           return (
             <div>
               this is the HomeList
-              {this.props.homes.map(home => <Home address={home['gsx$address']['$t']} />)}
+              {this.props.homes.map(home => <Home address={home['gsx$address']['$t'] + ', Seattle, WA'} />)}
+
             </div>
           );
         }
@@ -58,9 +60,13 @@
 
       var Home = React.createClass({
         render: function () {
+          var STREETVIEW_BASE = 'https://maps.googleapis.com/maps/api/streetview?size=600x400';
+          var url = STREETVIEW_BASE += '&location=' + encodeURIComponent(this.props.address);
+          console.log(url);
           return (
             <div>
               <p>this is a home with address {this.props.address}</p>
+              <img src={url} />
             </div>
           );
         }
