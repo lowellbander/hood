@@ -60,13 +60,18 @@
 
       var Home = React.createClass({
         render: function () {
-          var STREETVIEW_BASE = 'https://maps.googleapis.com/maps/api/streetview?size=600x400';
+          var STREETVIEW_BASE = 'https://maps.googleapis.com/maps/api/streetview?size=600x400&fov=120';
           var url = STREETVIEW_BASE += '&location=' + encodeURIComponent(this.props.address);
           console.log(url);
+          var url1 = url + '&heading=0';
+          var url2 = url + '&heading=120';
+          var url3 = url + '&heading=240';
           return (
             <div>
               <p>this is a home with address {this.props.address}</p>
-              <img src={url} />
+              <img src={url1} />
+              <img src={url2} />
+              <img src={url3} />
             </div>
           );
         }
