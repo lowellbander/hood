@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Hello React!</title>
+    <script src="build/react.js"></script>
+    <script src="build/react-dom.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-core/5.8.23/browser.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+  </head>
+  <body>
+    <div id="content"></div>
+    <script type="text/babel">
+      var Window = React.createClass({
+        getInitialState: function() {
+          return {homes: []};
+        },
+        componentDidMount: function() {
+            $.ajax({
+              url: this.props.url,
+              dataType: 'json',
+              cache: false,
+              success: function(data) {
+                this.setState({data: data});
+                this.setState({homes: data.feed.entry});
+                console.log(data);
+              }.bind(this),
+              error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+              }.bind(this)
+            });
+          },
+
+        render: function() {
+          return (
+            <div className="commentBox">
+              Hello, world! This is the main window.
+              <HomeList homes={this.state.homes} />
+            </div>
+          );
+        }
+      });
+
+      var HomeList = React.createClass({
+        componentDidMount: function() {
+          console.log(this.props);
+        },
+        render: function() {
+          console.log(this.props)
+          return (
+            <div>
+              this is the HomeList
+              {this.props.homes.map(home => <Home address={home['gsx$address']['$t']} />)}
+            </div>
+          );
+        }
+      });
+
+      var Home = React.createClass({
+        render: function () {
+          return (
+            <div>
+              <p>this is a home with address {this.props.address}</p>
+            </div>
+          );
+        }
+      });
+
+      ReactDOM.render(
+        <Window url="https://spreadsheets.google.com/feeds/list/1pT4hDw6DbKfYF0Q1F6eth19N0C727YVBVRNPPkyIT2M/1/public/values?alt=json"/>,
+        document.getElementById('content')
+      );
+    </script>
+  </body>
+</html>
